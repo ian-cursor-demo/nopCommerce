@@ -28,6 +28,8 @@ Conventions worth knowing before you change anything:
 - Public storefront controllers derive from `BasePublicController`; admin controllers derive from `BaseAdminController`.
 - Follow `.editorconfig`: C# files use 4-space indentation and UTF-8 with BOM. Keep file-scoped namespaces and the existing `#region` layout in the files you edit.
 
+For startup flow, the plugin lifecycle, a checkout trace, and where to start reading for a given goal, see `.cursor/skills/onboard-nopcommerce/SKILL.md`.
+
 ## Build and test
 
 Run this from the repo root and make sure it passes before you push. It mirrors the `.NET` GitHub Actions workflow, which runs the same build and tests on `windows-latest` for every PR to `develop`.
