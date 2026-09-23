@@ -67,16 +67,9 @@ public class PlaceOrderTests : ServiceTest
     [SetUp]
     public async Task SetUp()
     {
-        _orderProcessingService = GetService<IOrderProcessingService>();
-        _orderService = GetService<IOrderService>();
-        _shoppingCartService = GetService<IShoppingCartService>();
-        _productService = GetService<IProductService>();
-        _customerService = GetService<ICustomerService>();
-        _discountService = GetService<IDiscountService>();
+        // Settings are loaded per resolve. Place order must be constructed after the
+        // active shipping and payment lists are saved, or it keeps the install defaults.
         _settingService = GetService<ISettingService>();
-        _genericAttributeService = GetService<IGenericAttributeService>();
-        _storeService = GetService<IStoreService>();
-
         _shippingSettings = GetService<ShippingSettings>();
         _paymentSettings = GetService<PaymentSettings>();
         _taxSettings = GetService<TaxSettings>();
@@ -100,6 +93,15 @@ public class PlaceOrderTests : ServiceTest
         await _settingService.SaveSettingAsync(_taxSettings);
 
         TestPaymentMethod.AdditionalHandlingFee = decimal.Zero;
+
+        _orderProcessingService = GetService<IOrderProcessingService>();
+        _orderService = GetService<IOrderService>();
+        _shoppingCartService = GetService<IShoppingCartService>();
+        _productService = GetService<IProductService>();
+        _customerService = GetService<ICustomerService>();
+        _discountService = GetService<IDiscountService>();
+        _genericAttributeService = GetService<IGenericAttributeService>();
+        _storeService = GetService<IStoreService>();
 
         _customer = await _customerService.GetCustomerByEmailAsync(NopTestsDefaults.AdminEmail);
         _storeId = (await _storeService.GetAllStoresAsync()).First().Id;
