@@ -35,12 +35,7 @@ The pair takes about 80 s. The suite has 1,094 tests. Expect 8 skipped. The `Con
 - The first test that derives from `BaseNopTest` costs about 5.4 s per test run. Its static constructor builds the DI container, creates the SQLite schema and installs sample data once per process. A run that touches only tests outside `BaseNopTest`, such as `SingletonTests`, finishes in about 1.4 s.
 - The three `CanCheckVatNumber` cases in `Nop.Services.Tests/Tax/TaxServiceTests.cs` call the EU VIES and UK HMRC VAT web services. They fail without internet access.
 - `CanExportOrdersXlsx` in `Nop.Services.Tests/ExportImport/ExportManagerTests.cs` is flaky. It failed in 4 of 13 runs, alone and in the full suite, with `Address.ShippingFirstName` empty. Rerun it once before you treat a failure as yours.
-- Plugin `.csproj` files use `$(SolutionDir)` in `OutputPath` and in their project references. Build plugins through the solution, never as a single project:
-
-```bash
-dotnet build src/NopCommerce.sln
-```
-
+- Plugin `.csproj` files use `$(SolutionDir)` in `OutputPath` and in their project references. Build plugins through the solution with `dotnet build src/NopCommerce.sln`, never as a single project.
 - Tests do not cover Razor views, JS or plugin wiring. Only the running app exercises them.
 
 ## Running the app
