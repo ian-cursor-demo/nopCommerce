@@ -16,6 +16,8 @@
     <PackageReference Include="AutoMapper" Version="14.0.0" />
     <!--Do not remove this reference. Azure.Identity library need for properly work some of the IThumbService implementation-->
     <PackageReference Include="Azure.Identity" Version="1.21.0" />
+    <!-- Same Azure.Core as Misc.AzureBlob / Azure.Storage.Blobs 12.30.1; Identity 1.21.0 only pulls 1.53.0. -->
+    <PackageReference Include="Azure.Core" Version="1.60.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="11.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="11.0.0" />
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="11.0.0" />
