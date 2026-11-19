@@ -304,7 +304,12 @@ public static class ServiceCollectionExtensions
         //add basic MVC feature
         var mvcBuilder = services.AddControllersWithViews();
 
+        // Plugin views are loose .cshtml copied to plugin output, not precompiled
+        // (Nop.Web RazorCompileOnPublish=false). Hot Reload is not a production
+        // replacement for loading those views after plugin install.
+#pragma warning disable ASPDEPR003
         mvcBuilder.AddRazorRuntimeCompilation();
+#pragma warning restore ASPDEPR003
 
         var appSettings = Singleton<AppSettings>.Instance;
         if (appSettings.Get<CommonConfig>().UseSessionStateTempDataProvider)
