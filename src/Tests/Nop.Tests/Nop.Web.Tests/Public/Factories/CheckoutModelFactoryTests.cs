@@ -1,4 +1,5 @@
-﻿using AwesomeAssertions;
+﻿using System.ComponentModel;
+using AwesomeAssertions;
 using Nop.Core;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Customers;
@@ -41,6 +42,9 @@ public class CheckoutModelFactoryTests : ServiceTest
     [OneTimeSetUp]
     public async Task SetUp()
     {
+        TypeDescriptor.AddAttributes(typeof(ShippingOption),
+            new TypeConverterAttribute(typeof(ShippingOptionTypeConverter)));
+
         _settingService = GetService<ISettingService>();
         _shippingSettings = GetService<ShippingSettings>();
         _rewardPointsSettings = GetService<RewardPointsSettings>();
@@ -96,9 +100,46 @@ public class CheckoutModelFactoryTests : ServiceTest
         await _settingService.SaveSettingAsync(_paymentSettings);
 
         _rewardPointsSettings.Enabled = true;
+        _rewardPointsSettings.MinimumRewardPointsToUse = 0;
+        _rewardPointsSettings.ExchangeRate = 1M;
         await _settingService.SaveSettingAsync(_rewardPointsSettings);
         foreach (var history in await _rewardPointService.GetRewardPointsHistoryAsync(_customer.Id))
             await _rewardPointService.DeleteRewardPointsHistoryEntryAsync(history);
+
+        var store = await GetService<IStoreContext>().GetCurrentStoreAsync();
+        await GetService<IGenericAttributeService>().SaveAttributeAsync<ShippingOption>(
+            _customer, NopCustomerDefaults.SelectedShippingOptionAttribute, null, store.Id);
+    }
+
+    /// <summary>
+    /// GetShoppingCartTotalAsync leaves redeemedRewardPoints at 0 when shipping
+    /// total is null (no selected option, cart not free-shipping, not exactly one
+    /// active method). Sample products 2 and 3 are not free shipping, so pin the
+    /// $10 test shipping option the original assertions were written against, and
+    /// reset shared RewardPointsSettings other fixtures leave behind.
+    /// </summary>
+    private async Task EnsurePaymentMethodPreconditionsAsync()
+    {
+        _rewardPointsSettings.Enabled = true;
+        _rewardPointsSettings.MinimumRewardPointsToUse = 0;
+        _rewardPointsSettings.ExchangeRate = 1M;
+        await _settingService.SaveSettingAsync(_rewardPointsSettings);
+
+        if (!_shippingSettings.ActiveShippingRateComputationMethodSystemNames.Contains("FixedRateTestShippingRateComputationMethod"))
+            _shippingSettings.ActiveShippingRateComputationMethodSystemNames.Add("FixedRateTestShippingRateComputationMethod");
+        await _settingService.SaveSettingAsync(_shippingSettings);
+
+        var store = await GetService<IStoreContext>().GetCurrentStoreAsync();
+        await GetService<IGenericAttributeService>().SaveAttributeAsync(
+            _customer,
+            NopCustomerDefaults.SelectedShippingOptionAttribute,
+            new ShippingOption
+            {
+                Name = "Shipping option 1",
+                Rate = 10M,
+                ShippingRateComputationMethodSystemName = "FixedRateTestShippingRateComputationMethod"
+            },
+            store.Id);
     }
 
     [Test]
@@ -150,7 +191,8 @@ public class CheckoutModelFactoryTests : ServiceTest
     [Test]
     public async Task CanPreparePaymentMethodModel()
     {
-        var model = await _checkoutModelFactory.PreparePaymentMethodModelAsync(_cart, 0);
+        await EnsurePaymentMethodPreconditionsAsync();
+        var model = await GetService<ICheckoutModelFactory>().PreparePaymentMethodModelAsync(_cart, 0);
 
         model.DisplayRewardPoints.Should().BeTrue();
         model.PaymentMethods.Count.Should().Be(1);
@@ -164,7 +206,8 @@ public class CheckoutModelFactoryTests : ServiceTest
     [Test]
     public async Task PreparePaymentMethodModelShouldDependOnSettings()
     {
-        var model = await _checkoutModelFactory.PreparePaymentMethodModelAsync(_cart, 0);
+        await EnsurePaymentMethodPreconditionsAsync();
+        var model = await GetService<ICheckoutModelFactory>().PreparePaymentMethodModelAsync(_cart, 0);
         model.DisplayRewardPoints.Should().BeTrue();
         model.RewardPointsToUse.Should().Be(1945);
         model.RewardPointsBalance.Should().Be(10000);

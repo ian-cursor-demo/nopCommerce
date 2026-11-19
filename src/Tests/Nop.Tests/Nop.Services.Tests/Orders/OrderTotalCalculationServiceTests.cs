@@ -164,6 +164,11 @@ public class OrderTotalCalculationServiceTests : ServiceTest
 
         await GetService<IGenericAttributeService>().SaveAttributeAsync<string>(_customer, NopCustomerDefaults.SelectedPaymentMethodAttribute, null, 1);
 
+        _rewardPointsSettings.Enabled = true;
+        _rewardPointsSettings.MinimumRewardPointsToUse = 0;
+        _rewardPointsSettings.ExchangeRate = 1M;
+        await _settingService.SaveSettingAsync(_rewardPointsSettings);
+
         foreach (var item in GetService<IRepository<Discount>>().Table.Where(d => d.Name == "Discount 1").ToList())
             await _discountService.DeleteDiscountAsync(item);
 
