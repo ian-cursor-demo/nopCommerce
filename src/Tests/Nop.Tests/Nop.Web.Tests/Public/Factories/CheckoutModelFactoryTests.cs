@@ -1,4 +1,5 @@
-﻿using AwesomeAssertions;
+﻿using System.Reflection;
+using AwesomeAssertions;
 using Nop.Core;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Customers;
@@ -46,8 +47,14 @@ public class CheckoutModelFactoryTests : ServiceTest
         _rewardPointsSettings = GetService<RewardPointsSettings>();
         _commonSettings = GetService<CommonSettings>();
 
+        _shippingSettings.ActiveShippingRateComputationMethodSystemNames.Clear();
         _shippingSettings.ActiveShippingRateComputationMethodSystemNames.Add("FixedRateTestShippingRateComputationMethod");
         await _settingService.SaveSettingAsync(_shippingSettings);
+
+        _rewardPointsSettings.Enabled = true;
+        _rewardPointsSettings.MinimumRewardPointsToUse = 0;
+        _rewardPointsSettings.ExchangeRate = 1M;
+        await _settingService.SaveSettingAsync(_rewardPointsSettings);
 
         _paymentSettings = GetService<PaymentSettings>();
         _paymentSettings.ActivePaymentMethodSystemNames.Add("Payments.TestMethod");
@@ -78,7 +85,25 @@ public class CheckoutModelFactoryTests : ServiceTest
         _paymentMethod = (await GetService<IPaymentPluginManager>().LoadActivePluginsAsync(["Payments.TestMethod"])).FirstOrDefault();
         _orderService = GetService<IOrderService>();
 
+        // ISettings and ICheckoutModelFactory are transient (LoadSetting per resolve).
+        // Bind fields to the factory's instances so later tests mutate the same objects
+        // instead of resolving a new factory (Windows testhost stack-overflows on the
+        // second GetService<ICheckoutModelFactory> after SaveSetting/cache clear).
         _checkoutModelFactory = GetService<ICheckoutModelFactory>();
+        _rewardPointsSettings = GetBackingField<RewardPointsSettings>(_checkoutModelFactory, "_rewardPointsSettings");
+        _shippingSettings = GetBackingField<ShippingSettings>(_checkoutModelFactory, "_shippingSettings");
+    }
+
+    private static T GetBackingField<T>(object instance, string name)
+    {
+        for (var type = instance.GetType(); type != null; type = type.BaseType)
+        {
+            var field = type.GetField(name, BindingFlags.Instance | BindingFlags.NonPublic);
+            if (field != null)
+                return (T)field.GetValue(instance);
+        }
+
+        throw new InvalidOperationException($"Field {name} was not found on {instance.GetType().Name}.");
     }
 
     [OneTimeTearDown]
@@ -96,6 +121,8 @@ public class CheckoutModelFactoryTests : ServiceTest
         await _settingService.SaveSettingAsync(_paymentSettings);
 
         _rewardPointsSettings.Enabled = true;
+        _rewardPointsSettings.MinimumRewardPointsToUse = 0;
+        _rewardPointsSettings.ExchangeRate = 1M;
         await _settingService.SaveSettingAsync(_rewardPointsSettings);
         foreach (var history in await _rewardPointService.GetRewardPointsHistoryAsync(_customer.Id))
             await _rewardPointService.DeleteRewardPointsHistoryEntryAsync(history);
@@ -170,12 +197,10 @@ public class CheckoutModelFactoryTests : ServiceTest
         model.RewardPointsBalance.Should().Be(10000);
 
         _rewardPointsSettings.Enabled = false;
-        await _settingService.SaveSettingAsync(_rewardPointsSettings);
 
-        model = await GetService<ICheckoutModelFactory>().PreparePaymentMethodModelAsync(_cart, 0);
+        model = await _checkoutModelFactory.PreparePaymentMethodModelAsync(_cart, 0);
 
         _rewardPointsSettings.Enabled = true;
-        await _settingService.SaveSettingAsync(_rewardPointsSettings);
 
         model.DisplayRewardPoints.Should().BeFalse();
         model.RewardPointsBalance.Should().Be(0);
