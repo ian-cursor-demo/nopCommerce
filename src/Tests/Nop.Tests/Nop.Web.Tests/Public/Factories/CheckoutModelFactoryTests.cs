@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using AwesomeAssertions;
+﻿using AwesomeAssertions;
 using Nop.Core;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Customers;
@@ -42,14 +41,12 @@ public class CheckoutModelFactoryTests : ServiceTest
     [OneTimeSetUp]
     public async Task SetUp()
     {
-        TypeDescriptor.AddAttributes(typeof(ShippingOption),
-            new TypeConverterAttribute(typeof(ShippingOptionTypeConverter)));
-
         _settingService = GetService<ISettingService>();
         _shippingSettings = GetService<ShippingSettings>();
         _rewardPointsSettings = GetService<RewardPointsSettings>();
         _commonSettings = GetService<CommonSettings>();
 
+        _shippingSettings.ActiveShippingRateComputationMethodSystemNames.Clear();
         _shippingSettings.ActiveShippingRateComputationMethodSystemNames.Add("FixedRateTestShippingRateComputationMethod");
         await _settingService.SaveSettingAsync(_shippingSettings);
 
@@ -107,16 +104,20 @@ public class CheckoutModelFactoryTests : ServiceTest
             await _rewardPointService.DeleteRewardPointsHistoryEntryAsync(history);
 
         var store = await GetService<IStoreContext>().GetCurrentStoreAsync();
-        await GetService<IGenericAttributeService>().SaveAttributeAsync<ShippingOption>(
-            _customer, NopCustomerDefaults.SelectedShippingOptionAttribute, null, store.Id);
+        await GetService<IGenericAttributeService>().SaveAttributeAsync(
+            _customer, NopCustomerDefaults.SelectedShippingOptionAttribute, string.Empty, store.Id);
     }
 
     /// <summary>
     /// GetShoppingCartTotalAsync leaves redeemedRewardPoints at 0 when shipping
     /// total is null (no selected option, cart not free-shipping, not exactly one
-    /// active method). Sample products 2 and 3 are not free shipping, so pin the
-    /// $10 test shipping option the original assertions were written against, and
-    /// reset shared RewardPointsSettings other fixtures leave behind.
+    /// active plugin). Sample products 2 and 3 are not free shipping, and other
+    /// fixtures leak RewardPointsSettings / extra shipping plugins on the shared
+    /// ServiceProvider. Pin exactly one test shipping plugin so GetFixedRateAsync
+    /// supplies the $10 rate the original assertions were written against.
+    /// Do not persist a SelectedShippingOption: ShippingOptionTypeConverter uses
+    /// XmlSerializer, which recurses through TypeDescriptor on Windows and
+    /// overflows the stack.
     /// </summary>
     private async Task EnsurePaymentMethodPreconditionsAsync()
     {
@@ -125,21 +126,13 @@ public class CheckoutModelFactoryTests : ServiceTest
         _rewardPointsSettings.ExchangeRate = 1M;
         await _settingService.SaveSettingAsync(_rewardPointsSettings);
 
-        if (!_shippingSettings.ActiveShippingRateComputationMethodSystemNames.Contains("FixedRateTestShippingRateComputationMethod"))
-            _shippingSettings.ActiveShippingRateComputationMethodSystemNames.Add("FixedRateTestShippingRateComputationMethod");
+        _shippingSettings.ActiveShippingRateComputationMethodSystemNames.Clear();
+        _shippingSettings.ActiveShippingRateComputationMethodSystemNames.Add("FixedRateTestShippingRateComputationMethod");
         await _settingService.SaveSettingAsync(_shippingSettings);
 
         var store = await GetService<IStoreContext>().GetCurrentStoreAsync();
         await GetService<IGenericAttributeService>().SaveAttributeAsync(
-            _customer,
-            NopCustomerDefaults.SelectedShippingOptionAttribute,
-            new ShippingOption
-            {
-                Name = "Shipping option 1",
-                Rate = 10M,
-                ShippingRateComputationMethodSystemName = "FixedRateTestShippingRateComputationMethod"
-            },
-            store.Id);
+            _customer, NopCustomerDefaults.SelectedShippingOptionAttribute, string.Empty, store.Id);
     }
 
     [Test]
