@@ -15,10 +15,11 @@
     <PackageReference Include="FluentMigrator" Version="7.2.0" />
     <PackageReference Include="FluentMigrator.Runner" Version="7.2.0" />
     <PackageReference Include="linq2db" Version="6.2.1" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.1" />
+    <!-- 7.0.1 is the minimum that satisfies Microsoft.Extensions.Caching.SqlServer 11.0.0 (>= 7.0.0) and includes the 7.0.0 SqlBulkCopy fix. 7.1.x is the third-party bump. -->
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="7.0.1" />
     <PackageReference Include="Npgsql" Version="10.0.2" />
     <PackageReference Include="MySqlConnector" Version="2.5.0" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.1" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="11.0.0" />
   </ItemGroup>
 
   <ItemGroup>
