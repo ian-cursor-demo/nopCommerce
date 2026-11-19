@@ -1,0 +1,55 @@
+@model ConfigurationModel
+
+@{
+    Layout = "_ConfigurePlugin";
+}
+
+<form asp-controller="NodeTax" asp-action="Configure" method="post">
+    <div class="card card-default">
+        <div class="card-body">
+            <div class="form-group row">
+                <div class="col-md-3">
+                    <nop-label asp-for="BaseUrl" />
+                </div>
+                <div class="col-md-9">
+                    <nop-editor asp-for="BaseUrl" />
+                    <span asp-validation-for="BaseUrl"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-3">
+                    <nop-label asp-for="ApiKey" />
+                </div>
+                <div class="col-md-9">
+                    <nop-editor asp-for="ApiKey" />
+                    <span asp-validation-for="ApiKey"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-3">
+                    <nop-label asp-for="RequestTimeoutSeconds" />
+                </div>
+                <div class="col-md-9">
+                    <nop-editor asp-for="RequestTimeoutSeconds" />
+                    <span asp-validation-for="RequestTimeoutSeconds"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-3">
+                    <nop-label asp-for="LogRequestErrors" />
+                </div>
+                <div class="col-md-9">
+                    <nop-editor asp-for="LogRequestErrors" />
+                    <span asp-validation-for="LogRequestErrors"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-9 offset-md-3">
+                    <button type="submit" name="save" class="btn btn-primary">
+                        @T("Admin.Common.Save")
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

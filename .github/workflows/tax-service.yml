@@ -1,0 +1,42 @@
+name: Tax Service
+
+on:
+  push:
+    branches: ["develop"]
+    paths:
+      - "services/tax-service/**"
+      - ".github/workflows/tax-service.yml"
+  pull_request:
+    branches: ["develop"]
+    paths:
+      - "services/tax-service/**"
+      - ".github/workflows/tax-service.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: services/tax-service
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: services/tax-service/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build

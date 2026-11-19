@@ -61,4 +61,5 @@ Use the `cursor-ide-browser` MCP server. Before calling MCP tools, read the rele
 
 - Do not use the default `docker-compose.yml` on Apple Silicon unless the user specifically wants to debug the database stack. Its SQL Server service is commonly x64-only.
 - The app container alone is enough to reach the nopCommerce installer.
+- When using the full stack with `docker-compose.yml`, the `tax_service` container starts alongside nopCommerce and MSSQL. Configure the Node tax provider in admin with base URL `http://tax_service:3000` and the API key from compose (`dev-tax-api-key` by default).
 - To stop the app, use [stop-local-nopcommerce](../stop-local-nopcommerce/SKILL.md).

@@ -6,6 +6,10 @@ services:
             - "80:80"
         depends_on:
             - nopcommerce_database
+            - tax_service
+        environment:
+            NodeTaxSettings__BaseUrl: http://tax_service:3000
+            NodeTaxSettings__ApiKey: dev-tax-api-key
     nopcommerce_database:
         image: "mcr.microsoft.com/mssql/server:2019-latest"
         container_name: nopcommerce_mssql_server
@@ -13,6 +17,19 @@ services:
             SA_PASSWORD: "nopCommerce_db_password"
             ACCEPT_EULA: "Y"
             MSSQL_PID: "Express"
+    tax_service:
+        build: ./services/tax-service
+        container_name: nopcommerce_tax_service
+        ports:
+            - "3000:3000"
+        depends_on:
+            - nopcommerce_database
+        environment:
+            PORT: "3000"
+            API_KEY: "dev-tax-api-key"
+            DATABASE_URL: "Server=nopcommerce_database;Database=nopCommerce;User Id=sa;Password=nopCommerce_db_password;TrustServerCertificate=True"
+            CACHE_TTL_SECONDS: "300"
+            COUNTRY_STATE_ZIP_ENABLED: "true"
 
 volumes:
-  nopcommerce_data:            
+  nopcommerce_data:

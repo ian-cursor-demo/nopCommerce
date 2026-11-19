@@ -1,0 +1,11 @@
+{
+  "Group": "Tax providers",
+  "FriendlyName": "Node Tax Service",
+  "SystemName": "Tax.NodeService",
+  "Version": "1.0.0",
+  "SupportedVersions": [ "5.00" ],
+  "Author": "nopCommerce team",
+  "DisplayOrder": 5,
+  "FileName": "Nop.Plugin.Tax.NodeService.dll",
+  "Description": "Delegates tax rate and total calculation to the external Node tax microservice"
+}

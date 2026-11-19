@@ -1,0 +1,207 @@
+openapi: 3.0.3
+info:
+  title: nopCommerce Tax Service
+  version: 1.0.0
+  description: Node tax microservice for nopCommerce ITaxProvider integration.
+servers:
+  - url: http://localhost:3000
+paths:
+  /health:
+    get:
+      summary: Health check
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+        '503':
+          description: Service unavailable
+  /v1/tax/rate:
+    post:
+      summary: Calculate tax rate
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaxRateRequest'
+      responses:
+        '200':
+          description: Tax rate calculated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxRateResponse'
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthorized
+  /v1/tax/total:
+    post:
+      summary: Calculate tax total for cart
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaxTotalRequest'
+      responses:
+        '200':
+          description: Tax total calculated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxTotalResponse'
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthorized
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+  schemas:
+    TaxAddress:
+      type: object
+      required: [countryId, stateProvinceId]
+      properties:
+        countryId:
+          type: integer
+        stateProvinceId:
+          type: integer
+        zip:
+          type: string
+    TaxCustomer:
+      type: object
+      properties:
+        id:
+          type: integer
+        isTaxExempt:
+          type: boolean
+        vatNumberStatus:
+          type: string
+    TaxProduct:
+      type: object
+      properties:
+        isTaxExempt:
+          type: boolean
+    TaxRateRequest:
+      type: object
+      required: [storeId, taxCategoryId, price]
+      properties:
+        storeId:
+          type: integer
+        taxCategoryId:
+          type: integer
+        price:
+          type: number
+          format: double
+        address:
+          $ref: '#/components/schemas/TaxAddress'
+        customer:
+          $ref: '#/components/schemas/TaxCustomer'
+        product:
+          $ref: '#/components/schemas/TaxProduct'
+        countryStateZipEnabled:
+          type: boolean
+    TaxRateResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseNopResult'
+        - type: object
+          properties:
+            taxRate:
+              type: number
+              format: double
+    CartItem:
+      type: object
+      required: [productId, taxCategoryId, unitPrice, quantity]
+      properties:
+        productId:
+          type: integer
+        taxCategoryId:
+          type: integer
+        unitPrice:
+          type: number
+          format: double
+        quantity:
+          type: integer
+        isTaxExempt:
+          type: boolean
+    TaxSettings:
+      type: object
+      properties:
+        pricesIncludeTax:
+          type: boolean
+        shippingIsTaxable:
+          type: boolean
+        shippingPriceIncludesTax:
+          type: boolean
+        shippingTaxClassId:
+          type: integer
+        paymentMethodAdditionalFeeIsTaxable:
+          type: boolean
+        paymentMethodAdditionalFeeIncludesTax:
+          type: boolean
+        paymentMethodAdditionalFeeTaxClassId:
+          type: integer
+        countryStateZipEnabled:
+          type: boolean
+    TaxTotalRequest:
+      type: object
+      required: [storeId, cartItems]
+      properties:
+        storeId:
+          type: integer
+        usePaymentMethodAdditionalFee:
+          type: boolean
+        customer:
+          $ref: '#/components/schemas/TaxCustomer'
+        cartItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartItem'
+        shippingPrice:
+          type: number
+          format: double
+        paymentFee:
+          type: number
+          format: double
+        address:
+          $ref: '#/components/schemas/TaxAddress'
+        settings:
+          $ref: '#/components/schemas/TaxSettings'
+    TaxTotalResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseNopResult'
+        - type: object
+          properties:
+            taxTotal:
+              type: number
+              format: double
+            taxRates:
+              type: object
+              additionalProperties:
+                type: number
+                format: double
+    BaseNopResult:
+      type: object
+      required: [success, errors]
+      properties:
+        success:
+          type: boolean
+        errors:
+          type: array
+          items:
+            type: string
