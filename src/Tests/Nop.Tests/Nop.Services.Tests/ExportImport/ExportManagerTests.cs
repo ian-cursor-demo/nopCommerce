@@ -207,7 +207,7 @@ public class ExportManagerTests : ServiceTest
     [Test]
     public async Task CanExportOrdersXlsx()
     {
-        var orders = await _orderService.SearchOrdersAsync();
+        var orders = (await _orderService.SearchOrdersAsync()).ToList();
 
         var excelData = await _exportManager.ExportOrdersToXlsxAsync(orders);
         var workbook = GetWorkbook(excelData);
@@ -216,8 +216,6 @@ public class ExportManagerTests : ServiceTest
         // get the first worksheet in the workbook
         var worksheet = workbook.Worksheets.FirstOrDefault()
                         ?? throw new NopException("No worksheet found");
-
-        manager.ReadDefaultFromXlsx(worksheet, 2);
 
         var replacePairs = new Dictionary<string, string>
         {
@@ -228,7 +226,24 @@ public class ExportManagerTests : ServiceTest
             { "ShippingPickupInStore", "PickupInStore" }
         };
 
-        var order = orders.First();
+        // SearchOrdersAsync is newest-first. Other tests insert pickup-in-store orders
+        // (no shipping address); ExportOrdersToXlsxAsync then writes pickup/empty
+        // values into the Shipping* columns. Pin a shipped order and the Excel row
+        // whose OrderId matches (do not assume list index == sheet row).
+        var order = orders.FirstOrDefault(o => !o.PickupInStore && o.ShippingAddressId is > 0);
+        order.Should().NotBeNull();
+        var lastRow = worksheet.LastRowUsed()?.RowNumber() ?? 1;
+        var matched = false;
+        for (var row = 2; row <= lastRow; row++)
+        {
+            manager.ReadDefaultFromXlsx(worksheet, row);
+            if (manager.GetDefaultProperties.First(p => p.PropertyName == "OrderId").IntValue == order.Id)
+            {
+                matched = true;
+                break;
+            }
+        }
+        matched.Should().BeTrue();
 
         var ignore = new List<string>();
         ignore.AddRange(replacePairs.Values);
