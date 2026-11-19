@@ -228,11 +228,22 @@ public class ExportManagerTests : ServiceTest
 
         // SearchOrdersAsync is newest-first. Other tests insert pickup-in-store orders
         // (no shipping address); ExportOrdersToXlsxAsync then writes pickup/empty
-        // values into the Shipping* columns. Pin a shipped order and its Excel row.
-        var orderIndex = orders.FindIndex(o => !o.PickupInStore && o.ShippingAddressId is > 0);
-        orderIndex.Should().BeGreaterThanOrEqualTo(0);
-        var order = orders[orderIndex];
-        manager.ReadDefaultFromXlsx(worksheet, 2 + orderIndex);
+        // values into the Shipping* columns. Pin a shipped order and the Excel row
+        // whose OrderId matches (do not assume list index == sheet row).
+        var order = orders.FirstOrDefault(o => !o.PickupInStore && o.ShippingAddressId is > 0);
+        order.Should().NotBeNull();
+        var lastRow = worksheet.LastRowUsed()?.RowNumber() ?? 1;
+        var matched = false;
+        for (var row = 2; row <= lastRow; row++)
+        {
+            manager.ReadDefaultFromXlsx(worksheet, row);
+            if (manager.GetDefaultProperties.First(p => p.PropertyName == "OrderId").IntValue == order.Id)
+            {
+                matched = true;
+                break;
+            }
+        }
+        matched.Should().BeTrue();
 
         var ignore = new List<string>();
         ignore.AddRange(replacePairs.Values);
