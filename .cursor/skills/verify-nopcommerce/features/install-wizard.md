@@ -5,7 +5,7 @@ The first-run page where a store owner picks a database, creates the admin accou
 ## Sub-features
 
 - Redirect from any URL to `/install` while the store is uninstalled (`InstallUrlMiddleware`).
-- Language switcher for the wizard itself (`#language`, which navigates to `/installchangelanguage/<code>`).
+- Language switcher for the wizard itself (`#language`). Each option's value is `/install/ChangeLanguage/<code>` (for example `/install/ChangeLanguage/en`).
 - Admin email, password, and confirm password.
 - Country / regional resources (`#Country`). A non-en-US culture downloads a language pack from nopcommerce.com.
 - Sample data checkbox and newsletter checkbox. The newsletter calls nopcommerce.com.
@@ -29,7 +29,7 @@ Handles:
 
 - Admin account: `#AdminEmail`, `#AdminPassword`, `#ConfirmPassword`.
 - Region and options: `#Country` (value `US-en-US`), `#InstallSampleData`, `#SubscribeNewsletters`.
-- Database: `#DataProvider` (values `SqlServer`, `MySql`, `PostgreSQL`), `#CreateDatabaseIfNotExists`, `#ServerName`, `#DatabaseName`, `#Username`, `#Password`, plus `#ConnectionStringRaw` / `#ConnectionString` for raw mode.
+- Database: `#DataProvider`, `#CreateDatabaseIfNotExists`, `#ServerName`, `#DatabaseName`, `#Username`, `#Password`, plus `#ConnectionStringRaw` / `#ConnectionString` for raw mode. The select's option values are `1` (Microsoft SQL Server), `2` (MySQL) and `3` (PostgreSQL). `page.select_option("#DataProvider", value="PostgreSQL")` still works, because Playwright matches that label as well as the value; `SqlServer` does not match the label "Microsoft SQL Server". `nopverify.sh launch` posts the enum name `DataProvider=PostgreSQL`, which model binding accepts.
 - Submit: `button.btn-install`.
 - Errors: `.validation-summary-errors`.
 

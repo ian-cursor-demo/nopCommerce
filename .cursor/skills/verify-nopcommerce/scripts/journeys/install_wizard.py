@@ -21,6 +21,7 @@ with Run("install-wizard") as run:
     page.select_option("#Country", value="US-en-US")
     page.check("#InstallSampleData")
     page.uncheck("#SubscribeNewsletters")
+    # Option values are 1/2/3 (PostgreSQL is 3). The label "PostgreSQL" matches too; "SqlServer" does not.
     page.select_option("#DataProvider", value="PostgreSQL")
     page.check("#CreateDatabaseIfNotExists")
     page.fill("#ServerName", "localhost")
