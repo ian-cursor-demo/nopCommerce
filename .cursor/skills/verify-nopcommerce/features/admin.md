@@ -14,6 +14,7 @@ The back office in `/Admin`, an AdminLTE layout with DataTables grids. Code: `Ar
   - order details `/Admin/Order/Edit/{id}`: status changes, shipments, notes;
   - shipments and returns.
 - Customers: list `/Admin/Customer/List` (`#SearchEmail`, `#search-customers`, grid `#customers-grid`), edit, roles, impersonation.
+- Promotions → Reminders at `/Admin/Reminder` (heading "Reminders"): abandoned-cart, incomplete-registration, and pending-order follow-ups. Code: `Areas/Admin/Controllers/ReminderController.cs`.
 - Configuration:
   - settings pages;
   - plugins `/Admin/Plugin/List` (install or uninstall restarts the app);
@@ -35,7 +36,7 @@ expect(page.locator("#products-grid tbody tr", has_text="Fahrenheit 451")).to_be
 
 run.goto("/Admin/Order/List"); run.wait_ajax()
 first_row = page.locator("#orders-grid tbody tr").first.inner_text()   # newest order first
-run.goto(f"/Admin/Order/Edit/{order_id}")                  # h1 "Edit order details - <id>"
+run.goto(f"/Admin/Order/Edit/{order_id}")                  # heading "Edit order details - <custom order number>"
 
 run.goto("/Admin/Customer/List")
 page.fill("#SearchEmail", email); page.click("#search-customers"); run.wait_ajax()
@@ -53,7 +54,8 @@ All handles here were exercised against a sample-data install. After `guest_chec
 
 ## Gotchas
 
-- Admin grids load over AJAX after the page loads. Call `run.wait_ajax()` before reading rows, and again after clicking a search button.
+- Admin grids load over AJAX after the page loads. Call `run.wait_ajax()` before reading rows, and again after clicking a search button. On the orders grid the customer name is a link to the customer, not the order; open `/Admin/Order/Edit/{id}` directly.
+- The order edit `h1` starts with "Edit order details - " plus `CustomOrderNumber` (the same as the numeric id in sample data). The "back to order list" link sits inside that `h1`, so `inner_text()` is longer than the title.
 - Admin edit pages hide fields marked `.advanced-setting` until the **Basic / Advanced** switch (`#advanced-settings-mode`, top right of the page) is on. Pages are also split into collapsible `nop-card` sections. Turn on advanced mode, and open the card, before filling a hidden field.
 - Installing or uninstalling a plugin from `/Admin/Plugin/List`, and the header's `#restart-application` button, restart the app process. The restart loop brings it back within seconds; wait for `GET /` to return 200 before going on.
 - The admin email is stored lowercased (`admin@yourstore.com`).
