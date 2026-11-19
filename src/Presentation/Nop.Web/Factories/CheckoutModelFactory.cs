@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using System.Globalization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Nop.Core;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Customers;
@@ -447,6 +448,7 @@ public partial class CheckoutModelFactory : ICheckoutModelFactory
                 model.NotifyCustomerAboutShippingFromMultipleLocations = getShippingOptionResponse.ShippingFromMultipleLocations;
 
             var language = await _workContext.GetWorkingLanguageAsync();
+            var languageCulture = new CultureInfo(language.LanguageCulture);
             foreach (var shippingMethod in model.ShippingMethods)
             {
                 var transitDays = shippingMethod.ShippingOption.TransitDays;
@@ -470,8 +472,8 @@ public partial class CheckoutModelFactory : ICheckoutModelFactory
                         var userDate = await _dateTimeHelper.ConvertToUserTimeAsync(date, DateTimeKind.Utc);
                         availableDates.Add(new SelectListItem
                         {
-                            Value = date.ToString("yyyy-MM-dd"),
-                            Text = userDate.ToString("D")
+                            Value = date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
+                            Text = userDate.ToString("D", languageCulture)
                         });
                     }
 

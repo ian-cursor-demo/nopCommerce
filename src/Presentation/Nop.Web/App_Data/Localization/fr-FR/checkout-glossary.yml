@@ -1,0 +1,29 @@
+# Approved French terminology for checkout localization (fr-FR).
+# Regulatory submissions require exact terms; forbidden synonyms fail CI.
+
+approved_terms:
+  commande: "Commande / processus de commande"
+  adresse_de_facturation: "Adresse de facturation"
+  adresse_de_livraison: "Adresse de livraison"
+  mode_de_paiement: "Mode de paiement"
+  mode_de_livraison: "Mode de livraison"
+  tva: "TVA / Numéro de TVA"
+  points_de_fidelite: "Points de fidélité"
+
+forbidden_synonyms:
+  - term: "taxe"
+    use_instead: "TVA"
+  - term: "impôt"
+    use_instead: "TVA"
+  - term: "règlement"
+    use_instead: "mode de paiement"
+  - term: "méthode de paiement"
+    use_instead: "mode de paiement"
+  - term: "adresse d'expédition"
+    use_instead: "adresse de livraison"
+  - term: "méthode d'expédition"
+    use_instead: "mode de livraison"
+  - term: "bonus"
+    use_instead: "points de fidélité"
+  - term: "crédits"
+    use_instead: "points de fidélité"

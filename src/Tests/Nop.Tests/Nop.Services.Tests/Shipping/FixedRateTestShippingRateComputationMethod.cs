@@ -27,7 +27,8 @@ public class FixedRateTestShippingRateComputationMethod : BasePlugin, IShippingR
         {
             Name = "Shipping option 1",
             Description = string.Empty,
-            Rate = GetRate()
+            Rate = GetRate(),
+            TransitDays = 3
         });
         response.ShippingOptions.Add(new ShippingOption
         {

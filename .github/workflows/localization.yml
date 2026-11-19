@@ -1,0 +1,51 @@
+name: Localization
+
+on:
+  push:
+    branches:
+      - cursor/checkout-fr-localization-e4c5
+    paths:
+      - 'src/Presentation/Nop.Web/App_Data/Localization/**'
+      - 'src/Presentation/Nop.Web/Factories/CheckoutModelFactory.cs'
+      - 'src/Presentation/Nop.Web/Views/Checkout/**'
+      - 'src/Tests/Nop.Tests/**/Localization/**'
+      - 'src/Tests/Nop.Tests/**/CheckoutModelFactoryTests.cs'
+      - 'scripts/check-fr-terminology.sh'
+      - '.github/workflows/localization.yml'
+  pull_request:
+    paths:
+      - 'src/Presentation/Nop.Web/App_Data/Localization/**'
+      - 'src/Presentation/Nop.Web/Factories/CheckoutModelFactory.cs'
+      - 'src/Presentation/Nop.Web/Views/Checkout/**'
+      - 'src/Tests/Nop.Tests/**/Localization/**'
+      - 'src/Tests/Nop.Tests/**/CheckoutModelFactoryTests.cs'
+      - 'scripts/check-fr-terminology.sh'
+      - '.github/workflows/localization.yml'
+
+jobs:
+  localization-gates:
+    if: github.event_name == 'push' || github.head_ref == 'cursor/checkout-fr-localization-e4c5'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore src
+
+      - name: Build tests
+        run: dotnet build --no-restore --configuration Release src/Tests/Nop.Tests/Nop.Tests.csproj
+
+      - name: Completeness gate
+        run: dotnet test --no-build --configuration Release --verbosity normal src/Tests/Nop.Tests/Nop.Tests.csproj --filter FullyQualifiedName~CheckoutFrenchLocalization
+
+      - name: Checkout formatting tests
+        run: dotnet test --no-build --configuration Release --verbosity normal src/Tests/Nop.Tests/Nop.Tests.csproj --filter FullyQualifiedName~CheckoutModelFactoryTests
+
+      - name: Terminology enforcement
+        run: bash scripts/check-fr-terminology.sh

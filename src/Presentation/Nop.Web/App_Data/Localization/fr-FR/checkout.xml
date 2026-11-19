@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Language Name="French (France)">
+  <LocaleResource Name="Address.Fields.Email">
+    <Value>E-mail</Value>
+  </LocaleResource>
+  <LocaleResource Name="Address.Fields.FaxNumber">
+    <Value>Télécopie</Value>
+  </LocaleResource>
+  <LocaleResource Name="Address.Fields.PhoneNumber">
+    <Value>Numéro de téléphone</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout">
+    <Value>Commande</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.Address.NotFound">
+    <Value>L'adresse ne peut pas être chargée</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.Addresses.Invalid">
+    <Value>Vous avez {0} adresse(s) non valide(s)</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.BillingAddress">
+    <Value>Adresse de facturation</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.BillToThisAddress">
+    <Value>Facturer à cette adresse</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.Button">
+    <Value>Commander</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.ConfirmButton">
+    <Value>Confirmer</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.ConfirmOrder">
+    <Value>Confirmer la commande</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.ConfirmYourOrder">
+    <Value>Confirmez votre commande</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.Disabled">
+    <Value>Désolé, le processus de commande est temporairement désactivé</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.EditAddress">
+    <Value>Modifier l'adresse</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.EnterBillingAddress">
+    <Value>Saisir l'adresse de facturation</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.EnterShippingAddress">
+    <Value>Saisir l'adresse de livraison</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.MinOrderPlacementInterval">
+    <Value>Veuillez patienter quelques secondes avant de passer une nouvelle commande (vous avez déjà passé une commande il y a quelques secondes).</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.MinOrderSubtotalAmount">
+    <Value>Le montant minimum du sous-total de la commande est {0}</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.MinOrderTotalAmount">
+    <Value>Le montant total minimum de la commande est {0}</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.NewAddress">
+    <Value>Nouvelle adresse</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.NextButton">
+    <Value>Suivant</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.NoPaymentMethods">
+    <Value>Aucun mode de paiement disponible</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.OrderNumber">
+    <Value>Numéro de commande</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.OrderSummary">
+    <Value>Récapitulatif de la commande</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.OrEnterNewAddress">
+    <Value>Ou saisir une nouvelle adresse</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.PaymentError">
+    <Value>Erreur de paiement : {0}</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.PaymentInfo">
+    <Value>Informations de paiement</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.PaymentMethod">
+    <Value>Mode de paiement</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.PickupPoints">
+    <Value>Retrait</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.PickupPoints.Description">
+    <Value>Retirez vos articles en magasin</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.PickupPoints.Name">
+    <Value>Retrait chez {0}</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.PickupPoints.NotAvailable">
+    <Value>Les points de retrait n'ont pas pu être chargés</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.PickupPoints.NullName">
+    <Value>Retrait</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.PickupPoints.SelectPickupPoint">
+    <Value>Sélectionner un point de retrait</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.PlacedOrderDetails">
+    <Value>Cliquez ici pour les détails de la commande.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.Progress.Address">
+    <Value>Adresse</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.Progress.Cart">
+    <Value>Panier</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.Progress.Complete">
+    <Value>Terminé</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.Progress.Confirm">
+    <Value>Confirmation</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.Progress.Payment">
+    <Value>Paiement</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.Progress.Shipping">
+    <Value>Livraison</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.SelectBillingAddress">
+    <Value>Sélectionner l'adresse de facturation</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.SelectBillingAddressOrEnterNewOne">
+    <Value>Sélectionnez une adresse de facturation dans votre carnet d'adresses ou saisissez une nouvelle adresse.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.SelectDesiredDeliveryDate">
+    <Value>Sélectionner la date de livraison souhaitée</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.SelectPaymentMethod">
+    <Value>Sélectionner un mode de paiement</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.SelectPaymentMethod.MethodAndFee">
+    <Value>{0} ({1})</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.SelectShippingAddress">
+    <Value>Sélectionner l'adresse de livraison</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.SelectShippingAddressOrEnterNewOne">
+    <Value>Sélectionnez une adresse de livraison dans votre carnet d'adresses ou saisissez une nouvelle adresse.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.SelectShippingMethod">
+    <Value>Sélectionner un mode de livraison</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.SelectShippingMethod.MethodAndFee">
+    <Value>{0} ({1})</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.ShippingAddress">
+    <Value>Adresse de livraison</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.ShippingIsNotAllowed">
+    <Value>La livraison n'est pas autorisée</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.ShippingMethod">
+    <Value>Mode de livraison</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.ShippingMethod.ShippingFromMultipleLocations">
+    <Value>Veuillez noter que votre commande sera expédiée depuis plusieurs emplacements</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.ShippingOptionCouldNotBeLoaded">
+    <Value>Les options de livraison n'ont pas pu être chargées</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.ShipToSameAddress">
+    <Value>Livrer à la même adresse</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.ShipToThisAddress">
+    <Value>Livrer à cette adresse</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.SubmittingOrder">
+    <Value>Envoi des informations de commande...</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.TermsOfService">
+    <Value>Conditions générales</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.TermsOfService.IAccept">
+    <Value>J'accepte les conditions générales et m'y conforme sans réserve</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.TermsOfService.PleaseAccept">
+    <Value>Veuillez accepter les conditions générales avant de continuer.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.TermsOfService.Read">
+    <Value>(lire)</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.ThankYou">
+    <Value>Merci</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.ThankYou.Continue">
+    <Value>Continuer</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.UseRewardPoints">
+    <Value>Utiliser mes points de fidélité, {0} sur {1} points de fidélité ({2}) disponibles pour cette commande</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.VatNumber">
+    <Value>Numéro de TVA</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.VatNumber.Disabled">
+    <Value><![CDATA[Le numéro de TVA peut être saisi (sur la <a href="{0}">page d'informations client</a>) et utilisé uniquement après l'inscription]]></Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.VatNumber.Warning">
+    <Value>Le numéro de TVA est {0}</Value>
+  </LocaleResource>
+  <LocaleResource Name="Checkout.YourOrderHasBeenSuccessfullyProcessed">
+    <Value>Votre commande a été traitée avec succès !</Value>
+  </LocaleResource>
+  <LocaleResource Name="Common.Back">
+    <Value>Retour</Value>
+  </LocaleResource>
+  <LocaleResource Name="Common.Cancel">
+    <Value>Annuler</Value>
+  </LocaleResource>
+  <LocaleResource Name="Common.Continue">
+    <Value>Continuer</Value>
+  </LocaleResource>
+  <LocaleResource Name="Common.Delete">
+    <Value>Supprimer</Value>
+  </LocaleResource>
+  <LocaleResource Name="Common.Edit">
+    <Value>Modifier</Value>
+  </LocaleResource>
+  <LocaleResource Name="Common.FileUploader.Browse">
+    <Value>Parcourir</Value>
+  </LocaleResource>
+  <LocaleResource Name="Common.FileUploader.DropFiles">
+    <Value>Déposez les fichiers ici pour les téléverser</Value>
+  </LocaleResource>
+  <LocaleResource Name="Common.FileUploader.Processing">
+    <Value>Téléversement...</Value>
+  </LocaleResource>
+  <LocaleResource Name="Common.LoadingNextStep">
+    <Value>Chargement de l'étape suivante...</Value>
+  </LocaleResource>
+  <LocaleResource Name="Common.Save">
+    <Value>Enregistrer</Value>
+  </LocaleResource>
+  <LocaleResource Name="Common.WrongCaptchaMessage">
+    <Value>La réponse reCAPTCHA est invalide ou mal formée. Veuillez réessayer.</Value>
+  </LocaleResource>
+  <LocaleResource Name="PageTitle.Checkout">
+    <Value>Commande</Value>
+  </LocaleResource>
+  <LocaleResource Name="PaymentMethod.NotAvailableMethodsError">
+    <Value>Votre commande ne peut pas être finalisée pour le moment, car aucun mode de paiement n'est disponible.</Value>
+  </LocaleResource>
+  <LocaleResource Name="PaymentMethod.SpecifyMethodError">
+    <Value>Veuillez spécifier un mode de paiement.</Value>
+  </LocaleResource>
+  <LocaleResource Name="ShippingMethod.NotAvailableMethodsError">
+    <Value>Votre commande ne peut pas être finalisée pour le moment, car aucun mode de livraison n'est disponible. Veuillez modifier votre adresse de livraison.</Value>
+  </LocaleResource>
+  <LocaleResource Name="ShippingMethod.SpecifyMethodError">
+    <Value>Veuillez spécifier un mode de livraison.</Value>
+  </LocaleResource>
+</Language>
