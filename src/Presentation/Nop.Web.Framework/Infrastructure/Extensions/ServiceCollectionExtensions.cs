@@ -304,7 +304,14 @@ public static class ServiceCollectionExtensions
         //add basic MVC feature
         var mvcBuilder = services.AddControllersWithViews();
 
+        // Plugin views are loose .cshtml files copied next to the plugin (Content + CopyToOutputDirectory),
+        // and Nop.Web sets RazorCompileOnPublish=false. Controllers return those paths directly
+        // (for example ~/Plugins/Misc.News/Public/Views/List.cshtml). Hot Reload only recompiles during
+        // a dev session, so it cannot load a plugin view after install or in production.
+        // Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation is obsolete (ASPDEPR003) and stays on purpose.
+#pragma warning disable ASPDEPR003
         mvcBuilder.AddRazorRuntimeCompilation();
+#pragma warning restore ASPDEPR003
 
         var appSettings = Singleton<AppSettings>.Instance;
         if (appSettings.Get<CommonConfig>().UseSessionStateTempDataProvider)

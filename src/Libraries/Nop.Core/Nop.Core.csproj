@@ -16,12 +16,13 @@
     <PackageReference Include="AutoMapper" Version="14.0.0" />
     <!--Do not remove this reference. Azure.Identity library need for properly work some of the IThumbService implementation-->
     <PackageReference Include="Azure.Identity" Version="1.16.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="9.0.9" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="9.0.9" />
-    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.9" />
-    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="9.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="11.0.0" />
+    <!-- Kept so plugin .cshtml files (copied as content, not precompiled) load after install. Hot Reload does not replace that. ASPDEPR003 is suppressed at the call site. -->
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="11.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="11.0.0" />
+    <!-- 11.0.0 depends on Microsoft.Data.SqlClient >= 7.0.0. Nop.Data references 7.0.1 for that floor. The 7.1 line stays with the third-party bump. -->
+    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="11.0.0" />
     <PackageReference Include="Nito.AsyncEx.Coordination" Version="5.1.2" />
-    <PackageReference Include="System.IO.FileSystem.AccessControl" Version="5.0.0" />
   </ItemGroup>
 
 </Project>

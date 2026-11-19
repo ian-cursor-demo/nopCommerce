@@ -217,7 +217,8 @@ public partial class SqLiteNopDataProvider : BaseDataProvider, INopDataProvider
         {
             var tableName = DataContext.GetTable<TEntity>().TableName;
 
-            var result = DataContext.Query<int?>($"select seq from sqlite_sequence where name = \"{tableName}\"")
+            // SQLite 3.41+ (shipped with Microsoft.Data.Sqlite 11) treats double quotes as identifiers.
+            var result = DataContext.Query<int?>($"select seq from sqlite_sequence where name = '{tableName}'")
                 .FirstOrDefault();
 
             return Task.FromResult<int?>(result ?? 1);
@@ -322,7 +323,7 @@ public partial class SqLiteNopDataProvider : BaseDataProvider, INopDataProvider
         {
             var tableName = DataContext.GetTable<TEntity>().TableName;
 
-            DataContext.Execute($"update sqlite_sequence set seq = {ident} where name = \"{tableName}\"");
+            DataContext.Execute($"update sqlite_sequence set seq = {ident} where name = '{tableName}'");
         }
 
         return Task.CompletedTask;
