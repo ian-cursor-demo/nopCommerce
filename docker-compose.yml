@@ -4,15 +4,28 @@ services:
         container_name: nopcommerce
         ports:
             - "80:80"
+            - "8081:80"
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
         depends_on:
-            - nopcommerce_database
+            nopcommerce_database:
+                condition: service_healthy
     nopcommerce_database:
         image: "mcr.microsoft.com/mssql/server:2019-latest"
         container_name: nopcommerce_mssql_server
         environment:
             SA_PASSWORD: "nopCommerce_db_password"
+            MSSQL_SA_PASSWORD: "nopCommerce_db_password"
             ACCEPT_EULA: "Y"
             MSSQL_PID: "Express"
+        ports:
+            - "1433:1433"
+        healthcheck:
+            test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -C -Q \"SELECT 1\" || /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -C -Q \"SELECT 1\" || exit 1"]
+            interval: 10s
+            timeout: 5s
+            retries: 20
+            start_period: 25s
 
 volumes:
-  nopcommerce_data:            
+  nopcommerce_data:
