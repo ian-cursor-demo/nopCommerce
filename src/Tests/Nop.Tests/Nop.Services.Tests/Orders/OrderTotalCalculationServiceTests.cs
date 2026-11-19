@@ -621,10 +621,10 @@ public class OrderTotalCalculationServiceTests : ServiceTest
     }
 
     [Test]
-    [TestCase(12.00009, 12.00)]
-    [TestCase(12.119, 12.12)]
-    [TestCase(12.115, 12.12)]
-    [TestCase(12.114, 12.11)]
+    [TestCase("12.00009", "12.00")]
+    [TestCase("12.119", "12.12")]
+    [TestCase("12.115", "12.12")]
+    [TestCase("12.114", "12.11")]
     public async Task TestGetUnitPriceWhenRoundPricesDuringCalculationIsTruePriceMustBeRounded(decimal inputPrice, decimal expectedPrice)
     {
         // arrange
@@ -641,10 +641,10 @@ public class OrderTotalCalculationServiceTests : ServiceTest
     }
 
     [Test]
-    [TestCase(12.00009, 12.00009)]
-    [TestCase(12.119, 12.119)]
-    [TestCase(12.115, 12.115)]
-    [TestCase(12.114, 12.114)]
+    [TestCase("12.00009", "12.00009")]
+    [TestCase("12.119", "12.119")]
+    [TestCase("12.115", "12.115")]
+    [TestCase("12.114", "12.114")]
     public async Task TestGetUnitPriceWhenNotRoundPricesDuringCalculationIsFalsePriceMustNotBeRounded(decimal inputPrice, decimal expectedPrice)
     {
         // arrange            

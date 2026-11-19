@@ -330,7 +330,7 @@ public partial class ShippingService : IShippingService
             }
 
             //set dimensions as cube root of volume
-            width = length = height = Convert.ToDecimal(Math.Pow(Convert.ToDouble(totalVolume), 1.0 / 3.0));
+            width = length = height = Convert.ToDecimal(Math.Cbrt(Convert.ToDouble(totalVolume)));
 
             //sometimes we have products with sizes like 1x1x20
             //that's why let's ensure that a maximum dimension is always preserved
