@@ -12,12 +12,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentMigrator" Version="7.2.0" />
-    <PackageReference Include="FluentMigrator.Runner" Version="7.2.0" />
-    <PackageReference Include="linq2db" Version="6.2.1" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.1" />
-    <PackageReference Include="Npgsql" Version="10.0.2" />
-    <PackageReference Include="MySqlConnector" Version="2.5.0" />
+    <PackageReference Include="FluentMigrator" Version="8.0.1" />
+    <PackageReference Include="FluentMigrator.Runner" Version="8.0.1" />
+    <PackageReference Include="linq2db" Version="6.5.1" />
+    <!-- Stay on 6.1 LTS (SQL Server 2016). Do not take 7.x until that SKU is an accepted drop. -->
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.8" />
+    <PackageReference Include="Npgsql" Version="10.0.3" />
+    <PackageReference Include="MySqlConnector" Version="3.0.0" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="11.0.0" />
   </ItemGroup>
 
