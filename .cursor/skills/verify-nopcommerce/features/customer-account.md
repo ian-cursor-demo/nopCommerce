@@ -4,15 +4,15 @@ Registration, login and logout, and the "My account" pages. Code: `Controllers/C
 
 ## Sub-features
 
-- Register at `/register`: gender, first and last name, email, password, newsletter. The result page is `/registerresult/1`.
+- Register at `/register`: gender, first and last name, email, password, newsletter. Company is shown and optional. The result page is `/registerresult/1`.
 - Log in at `/login` and log out with the `.ico-logout` header link.
 - My account at `/customer/info`, with:
   - addresses (`/customer/addresses`);
   - orders (`/order/history`);
   - downloadable products, back-in-stock subscriptions, reward points;
   - change password (`/customer/changepassword`);
-  - avatar.
-- Password recovery at `/passwordrecovery`. It sends email through the queued email table; no SMTP is configured, so check `"QueuedEmail"`.
+  - avatar only when `customersettings.allowcustomerstouploadavatars` is true. A default install leaves it off, so the account nav has no Avatar link. The same nav does list Recurring payments, My product reviews, Requests for quote, and Quotes.
+- Password recovery at `/passwordrecovery` (`#Email`, `button[name='send-email']`). No SMTP is configured. Submitting an active customer's email inserts one `"QueuedEmail"` row; an unknown address inserts nothing. The form stays on `/passwordrecovery` either way.
 - Wishlist (`/wishlist`) and the header links `.ico-register`, `.ico-login`, `.ico-account`, `.ico-wishlist`, `.ico-cart`.
 
 ## How to get to it (user POV)

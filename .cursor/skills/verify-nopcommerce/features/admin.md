@@ -14,6 +14,7 @@ The back office in `/Admin`, an AdminLTE layout with DataTables grids. Code: `Ar
   - order details `/Admin/Order/Edit/{id}`: status changes, shipments, notes;
   - shipments and returns.
 - Customers: list `/Admin/Customer/List` (`#SearchEmail`, `#search-customers`, grid `#customers-grid`), edit, roles, impersonation.
+- Promotions: reminders at `/Admin/Reminder`. The page heading is "Reminders".
 - Configuration:
   - settings pages;
   - plugins `/Admin/Plugin/List` (install or uninstall restarts the app);
@@ -28,14 +29,16 @@ Log in as `admin@yourstore.com` / `Admin123!` through the storefront **Log in** 
 ## Driving it with nopdrive
 
 ```python
-run.admin_login()                                          # storefront login, then /Admin; h1 "Dashboard"
+run.admin_login()                                          # storefront login, then /Admin
+expect(page.locator(".content-header h1")).to_have_text("Dashboard")
 run.goto("/Admin/Product/List")
 page.fill("#SearchProductName", "Fahrenheit"); page.click("#search-products"); run.wait_ajax()
 expect(page.locator("#products-grid tbody tr", has_text="Fahrenheit 451")).to_be_visible()
 
 run.goto("/Admin/Order/List"); run.wait_ajax()
-first_row = page.locator("#orders-grid tbody tr").first.inner_text()   # newest order first
-run.goto(f"/Admin/Order/Edit/{order_id}")                  # h1 "Edit order details - <id>"
+row = page.locator("#orders-grid tbody tr").first
+row.locator("a[href*='/Admin/Order/Edit/']").click()       # View link; the customer cell links to Customer/Edit
+# .content-header h1 is "Edit order details - {CustomOrderNumber}" and contains "back to order list"
 
 run.goto("/Admin/Customer/List")
 page.fill("#SearchEmail", email); page.click("#search-customers"); run.wait_ajax()
@@ -53,6 +56,8 @@ All handles here were exercised against a sample-data install. After `guest_chec
 
 ## Gotchas
 
+- Read headings from `.content-header h1`. The first `h1` on an admin page is the layout throbber `h1.throbber-header` ("Wait..."), which is still in the document while the page settles.
+- On the orders grid, the customer column links to `/Admin/Customer/Edit/{customerId}`. The order itself is the View link `/Admin/Order/Edit/{id}`. The edit heading uses `CustomOrderNumber`, which in sample data is the same digits as the id.
 - Admin grids load over AJAX after the page loads. Call `run.wait_ajax()` before reading rows, and again after clicking a search button.
 - Admin edit pages hide fields marked `.advanced-setting` until the **Basic / Advanced** switch (`#advanced-settings-mode`, top right of the page) is on. Pages are also split into collapsible `nop-card` sections. Turn on advanced mode, and open the card, before filling a hidden field.
 - Installing or uninstalling a plugin from `/Admin/Plugin/List`, and the header's `#restart-application` button, restart the app process. The restart loop brings it back within seconds; wait for `GET /` to return 200 before going on.
