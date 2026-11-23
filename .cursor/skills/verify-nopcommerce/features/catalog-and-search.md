@@ -7,7 +7,7 @@ How shoppers find products: the homepage, category and manufacturer pages, produ
 - Homepage featured products (`.product-item` tiles).
 - Top menu categories, e.g. `/books`, `/computers`, `/apparel`.
 - Category page sorting (`#products-orderby`), page size, grid/list view mode. These are query params `orderby`, `pagesize`, `viewmode`.
-- Header search box with autocomplete (`#small-searchterms`) and the search results page (`/search?q=`) with advanced search.
+- Header search box with autocomplete (`#small-searchterms`) and the search results page (`/search?q=`) with advanced search. With the install default `catalogsettings.showsearchtermhistory` on, focusing the empty box lists previous terms in `.ui-autocomplete`.
 - Product detail page: name (`.product-name h1`), price, attributes, quantity, add to cart / wishlist / compare.
 - Recently viewed, new products, compare list (footer links).
 

@@ -16,7 +16,7 @@ Putting products in the cart and placing an order. Code: `Controllers/ShoppingCa
   6. Confirm
 - Multi-page checkout (`/checkout/billingaddress` and so on) when the `ordersettings.onepagecheckoutenabled` setting is off.
 - Order completed page `/checkout/completed` with the order number.
-- Registered checkout: saved addresses (`.select-billing-address-button`) and order history afterwards.
+- Registered checkout: a saved billing address, then order history afterwards. One-page checkout picks it from `#billing-address-select` (an option per saved address, plus "New address"). `.select-billing-address-button` exists only on the multi-page billing page.
 
 ## How to get to it (user POV)
 

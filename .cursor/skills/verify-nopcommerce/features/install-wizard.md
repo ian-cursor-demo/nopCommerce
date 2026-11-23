@@ -5,7 +5,7 @@ The first-run page where a store owner picks a database, creates the admin accou
 ## Sub-features
 
 - Redirect from any URL to `/install` while the store is uninstalled (`InstallUrlMiddleware`).
-- Language switcher for the wizard itself (`#language`, which navigates to `/installchangelanguage/<code>`).
+- Language switcher for the wizard itself (`#language`). Each option value is the route `/install/ChangeLanguage/<code>` (for example `/install/ChangeLanguage/en`), and choosing one reloads the wizard.
 - Admin email, password, and confirm password.
 - Country / regional resources (`#Country`). A non-en-US culture downloads a language pack from nopcommerce.com.
 - Sample data checkbox and newsletter checkbox. The newsletter calls nopcommerce.com.
@@ -29,7 +29,7 @@ Handles:
 
 - Admin account: `#AdminEmail`, `#AdminPassword`, `#ConfirmPassword`.
 - Region and options: `#Country` (value `US-en-US`), `#InstallSampleData`, `#SubscribeNewsletters`.
-- Database: `#DataProvider` (values `SqlServer`, `MySql`, `PostgreSQL`), `#CreateDatabaseIfNotExists`, `#ServerName`, `#DatabaseName`, `#Username`, `#Password`, plus `#ConnectionStringRaw` / `#ConnectionString` for raw mode.
+- Database: `#DataProvider`, `#CreateDatabaseIfNotExists`, `#ServerName`, `#DatabaseName`, `#Username`, `#Password`, plus `#ConnectionStringRaw` / `#ConnectionString` for raw mode. The rendered option values are `1` (label "Microsoft SQL Server"), `2` ("MySQL"), and `3` ("PostgreSQL"). Playwright's Python `select_option(..., value="PostgreSQL")` matches that label, which is what `install_wizard.py` does. A raw form POST may send either the number or the enum name `PostgreSQL`; `nopverify.sh launch` posts the enum name.
 - Submit: `button.btn-install`.
 - Errors: `.validation-summary-errors`.
 
